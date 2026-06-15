@@ -1,0 +1,8 @@
+services:
+  ingestion:
+    build: ./ingestion
+    restart: always
+    ports:
+      - "${INGEST_PORT:-8421}:${INGEST_PORT:-8421}"
+    env_file:
+      - .env
