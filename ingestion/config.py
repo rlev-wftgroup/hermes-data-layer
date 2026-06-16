@@ -11,16 +11,20 @@ class Config:
     lm_studio_url: str
     lm_studio_model: str
     ingest_port: int
+    api_key: str
 
     @classmethod
     def from_env(cls) -> Config:
         bills_db_url = os.environ.get("BILLS_DB_URL", "")
         hermes_db_url = os.environ.get("HERMES_DB_URL", "")
+        api_key = os.environ.get("INGEST_API_KEY", "")
         errors: list[str] = []
         if not bills_db_url:
             errors.append("BILLS_DB_URL is not set")
         if not hermes_db_url:
             errors.append("HERMES_DB_URL is not set")
+        if not api_key:
+            errors.append("INGEST_API_KEY is not set")
         if errors:
             raise ValueError("Configuration errors:\n" + "\n".join(f"  • {e}" for e in errors))
         return cls(
@@ -29,4 +33,5 @@ class Config:
             lm_studio_url=os.environ.get("LM_STUDIO_URL", "http://localhost:1234"),
             lm_studio_model=os.environ.get("LM_STUDIO_MODEL", "qwen2.5-7b-instruct-1m"),
             ingest_port=int(os.environ.get("INGEST_PORT", "8421")),
+            api_key=api_key,
         )
